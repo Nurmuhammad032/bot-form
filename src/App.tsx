@@ -22,13 +22,13 @@ const formSchema = z.object({
   name: z
     .string()
     .min(2, { message: "Iltimos, ismingizni kamida 2 belgidan iborat qiling" })
-    .max(20, {
-      message: "Iltimos, ismingizni maksimum 20 belgidan iborat qiling",
+    .max(25, {
+      message: "Iltimos, ismingizni maksimum 25 belgidan iborat qiling",
     }),
   phone: z
     .string()
-    .min(1, {
-      message: "Iltimos, telefon raqamingizni kamida 1 belgidan iborat qiling",
+    .min(9, {
+      message: "Iltimos, telefon raqamingizni kamida 9 belgidan iborat qiling",
     })
     .max(20, {
       message: "Telefon raqamingiz juda uzun, 20 belgidan oshmasligi kerak",
@@ -43,7 +43,7 @@ const formSchema = z.object({
 type IForm = z.infer<typeof formSchema>;
 
 function App() {
-  const [isPending, setIsPending] = useState(false);
+  // const [isPending, setIsPending] = useState(false);
   const [orderId, setOrderId] = useState("");
   const form = useForm<IForm>({
     resolver: zodResolver(formSchema),
@@ -68,7 +68,8 @@ function App() {
   const sendDataToTelegram = async (data: IForm) => {
     const { carModel, name, phone, sparePart, vinCode } = data;
     const orderId = "T" + new Date().getTime().toString().slice(-4);
-
+    setOrderId(orderId);
+    // setIsPending(true);
     if (vinCode) {
       // If a file is uploaded, use the sendPhoto API
       const telegramPhotoApiUrl =
@@ -93,21 +94,20 @@ function App() {
         text: message,
       });
     }
-
-    setOrderId(orderId);
+    // setIsPending(false);
   };
 
   async function onSubmit(values: IForm) {
-    setIsPending(true);
-    await sendDataToTelegram(values);
-    await sendDataToGoogleSheet(values);
-    setIsPending(false);
+    await Promise.all([
+      sendDataToTelegram(values),
+      sendDataToGoogleSheet(values),
+    ]);
   }
 
   return (
     <div className="min-h-screen w-full flex justify-center items-center">
       <div className="max-w-[28rem] px-3 w-full">
-        {!isPending && orderId ? (
+        {orderId ? (
           <div
             className="flex flex-col gap-y-2 p-5 rounded-md bg-[#ffffff] text-center"
             style={{
@@ -213,13 +213,16 @@ function App() {
                   </FormItem>
                 )}
               />
-              <Button
+              <Button type="submit" className="py-3 h-auto text-base">
+                Yuborish
+              </Button>
+              {/* <Button
                 type="submit"
                 className="py-3 h-auto text-base"
                 disabled={isPending}
               >
                 {isPending ? "Yuborilmoqda..." : "Yuborish"}
-              </Button>
+              </Button> */}
             </form>
           </Form>
         )}
