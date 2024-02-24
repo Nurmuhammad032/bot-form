@@ -105,7 +105,7 @@ function App() {
 
   return (
     <div className="min-h-screen w-full flex justify-center items-center">
-      <div className="max-w-[25rem] px-3 w-full">
+      <div className="max-w-[28rem] px-3 w-full">
         {!isPending && orderId ? (
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl">Buyurmangiz uchun rahmat!🎉</h1>
@@ -123,14 +123,20 @@ function App() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-y-4"
+              className="flex flex-col gap-y-4 bg-[#ffffff] p-5 rounded-md"
+              style={{
+                boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+              }}
             >
+              <h1 className="text-center text-2xl font-semibold">
+                Buyurtma berish
+              </h1>
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Ism:</FormLabel>
+                    <FormLabel isRequired>Ism:</FormLabel>
                     <FormControl>
                       <Input placeholder="Asadbek" {...field} />
                     </FormControl>
@@ -143,7 +149,9 @@ function App() {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Telefon raqamingizni kiritng:</FormLabel>
+                    <FormLabel isRequired>
+                      Telefon raqamingizni kiritng:
+                    </FormLabel>
                     <FormControl>
                       <PhoneInput
                         className="phone-input"
@@ -162,7 +170,9 @@ function App() {
                 name="carModel"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Mashingangiz modelini kiritng:</FormLabel>
+                    <FormLabel isRequired>
+                      Mashingangiz modelini kiritng:
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="Tesla Model 3" {...field} />
                     </FormControl>
