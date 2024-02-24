@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,7 +49,7 @@ function App() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      phone: "",
+      phone: "+998",
       carModel: "",
       vinCode: null,
       sparePart: "",
@@ -107,8 +108,15 @@ function App() {
     <div className="min-h-screen w-full flex justify-center items-center">
       <div className="max-w-[28rem] px-3 w-full">
         {!isPending && orderId ? (
-          <div className="flex flex-col gap-y-2">
-            <h1 className="text-2xl">Buyurmangiz uchun rahmat!🎉</h1>
+          <div
+            className="flex flex-col gap-y-2 p-5 rounded-md bg-[#ffffff] text-center"
+            style={{
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <h1 className="text-2xl font-semibold mb-5">
+              Buyurmangiz uchun rahmat!🎉
+            </h1>
             <p>
               Buyurtma statusini bilish uchun 10 daqiqadan keyin +998338065555
               telefoniga murojaat qilishingiz, yoki javobimizni kutishingiz
@@ -154,8 +162,9 @@ function App() {
                     </FormLabel>
                     <FormControl>
                       <PhoneInput
+                        defaultCountry="UZ"
                         className="phone-input"
-                        placeholder={"Telefon raqam"}
+                        placeholder={"+998 95 123 45 67"}
                         value={field.value}
                         onChange={field.onChange}
                         inputComponent={Input}

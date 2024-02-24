@@ -62,6 +62,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.phone-input {
+  display: flex;
+}
+
 .phone-input .PhoneInputCountry {
-  display: none;
+  max-width: 2rem;
 }
