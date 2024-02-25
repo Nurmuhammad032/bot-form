@@ -19,6 +19,7 @@ import { useState } from "react";
 import { Label } from "./components/ui/label";
 
 const formSchema = z.object({
+  orderId: z.any().optional(),
   name: z
     .string()
     .min(2, { message: "Iltimos, ismingizni kamida 2 belgidan iborat qiling" })
@@ -48,6 +49,7 @@ function App() {
   const form = useForm<IForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      orderId: "T" + new Date().getTime().toString().slice(-4),
       name: "",
       phone: "+998",
       carModel: "",
@@ -55,6 +57,8 @@ function App() {
       sparePart: "",
     },
   });
+
+  console.log(form.formState.errors);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -66,8 +70,7 @@ function App() {
   };
 
   const sendDataToTelegram = async (data: IForm) => {
-    const { carModel, name, phone, sparePart, vinCode } = data;
-    const orderId = "T" + new Date().getTime().toString().slice(-4);
+    const { carModel, name, phone, sparePart, vinCode, orderId } = data;
     setOrderId(orderId);
     // setIsPending(true);
     if (vinCode) {
@@ -234,7 +237,6 @@ function App() {
 const sendDataToGoogleSheet = async (formDetails: IForm) => {
   const endpointUrl =
     "https://hook.eu2.make.com/g3imut6177rtjyrminqifebh3i7z5vpt";
-
   await axios.post(endpointUrl, formDetails);
 };
 
